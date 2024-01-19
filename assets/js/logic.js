@@ -45,7 +45,8 @@ let questions = {
     correctIndex: 3,
   },
 };
-var timeLeft = 10;
+var timeLeft = 120;
+var score = 0;
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -53,6 +54,35 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
 
+function correctAnswer() {
+  score++;
+  var correctAudio = document.getElementById("correct");
+  correctAudio.play();
+  newQuestion(questions);
+}
+
+function incorrectAnswer() {
+  timeLeft = timeLeft - 5;
+  var incorrectAudio = document.getElementById("incorrect");
+  incorrectAudio.play();
+}
+
+function newQuestion(questionsObject) {
+  var keysArr = Object.keys(questionsObject);
+  var numQuestions = keysArr.length;
+  var qSelector = getRandomInt(1, numQuestions + 1);
+  var question = questionsObject[qSelector];
+  var questionTitle = document.getElementById("question-title");
+  console.log(question);
+  questionTitle.textContent = question.q;
+  var choices = document.getElementById("choices");
+  for (i = 0; i < question.answerArr.length; i++) {
+    choices.appendChild(document.createElement("button"));
+    choices.children[i].textContent = question.answerArr[i];
+    choices.children[i].onclick = incorrectAnswer;
+  }
+  choices.children[question.correctIndex].onclick = correctAnswer;
+}
 
 function endQuiz() {
   clearInterval(window.timeInterval);
@@ -63,7 +93,7 @@ function endQuiz() {
 function countDown() {
   timeLeft--;
   document.getElementById("time").textContent = timeLeft;
-  if (timeLeft == 0) {
+  if (timeLeft <= 0) {
     endQuiz();
   }
 }
@@ -71,6 +101,8 @@ function countDown() {
 function startQuiz() {
   window.timeInterval = setInterval(countDown, 1000);
   document.getElementById("start-screen").style.display = "none";
+  document.getElementById("questions").style.display = "block";
+  newQuestion(questions);
 }
 
 startBttn = document.getElementById("start");
