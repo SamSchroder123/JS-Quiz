@@ -45,6 +45,8 @@ let questions = {
     correctIndex: 3,
   },
 };
+var answeredQuestions = {};
+
 var timeLeft = 120;
 var score = 0;
 
@@ -58,22 +60,42 @@ function correctAnswer() {
   score++;
   var correctAudio = document.getElementById("correct");
   correctAudio.play();
-  newQuestion(questions);
+  setTimeout(function () {
+    questions = newQuestion(questions);
+  }, 1000);
 }
 
 function incorrectAnswer() {
   timeLeft = timeLeft - 5;
   var incorrectAudio = document.getElementById("incorrect");
   incorrectAudio.play();
+  setTimeout(function () {}, 1000);
 }
 
 function newQuestion(questionsObject) {
+  console.log(questionsObject);
   var keysArr = Object.keys(questionsObject);
   var numQuestions = keysArr.length;
+  //randomly select question
   var qSelector = getRandomInt(1, numQuestions + 1);
-  var question = questionsObject[qSelector];
+  //if questionsObject is empty end function
+  if (Object.keys(questionsObject).length === 0) {
+    console.log("empty questionsObject");
+    endQuiz();
+    return {};
+  }
+  //if questionsObject has questions but the selected question is undefined, try again
+  var question;
+  do {
+    var qSelector = getRandomInt(1, numQuestions + 1);
+    question = questionsObject[qSelector];
+  } while (question === undefined);
+  console.log("question = " + question);
+  //update question title
   var questionTitle = document.getElementById("question-title");
-  console.log(question);
+  //   console.log(question);
+  var q = "q";
+  console.log("question[q] = " + question[q]);
   questionTitle.textContent = question.q;
   var choices = document.getElementById("choices");
   //clear buttons before creating new
@@ -87,11 +109,22 @@ function newQuestion(questionsObject) {
   }
   //only the button with the correct answer is correct
   choices.children[question.correctIndex].onclick = correctAnswer;
+  //remove selected question from questions object so as not to repeat
+  delete questionsObject[qSelector];
+  return questionsObject;
 }
 
 function endQuiz() {
+  console.log("end");
   clearInterval(window.timeInterval);
   //TODO: display score
+  document.getElementById("questions").style.display = "none";
+  var feedback = document.getElementById("feedback");
+  feedback.style.display = "block";
+  var scoreElement = document.createElement("h2");
+  scoreElement.textContent = "Score: " + score;
+  feedback.appendChild(scoreElement);
+
   //TODO: give ability to save initials and score
 }
 
@@ -107,7 +140,7 @@ function startQuiz() {
   window.timeInterval = setInterval(countDown, 1000);
   document.getElementById("start-screen").style.display = "none";
   document.getElementById("questions").style.display = "block";
-  newQuestion(questions);
+  questions = newQuestion(questions);
 }
 
 startBttn = document.getElementById("start");
