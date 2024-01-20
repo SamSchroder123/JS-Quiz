@@ -76,11 +76,16 @@ function newQuestion(questionsObject) {
   console.log(question);
   questionTitle.textContent = question.q;
   var choices = document.getElementById("choices");
+  //clear buttons before creating new
+  choices.innerHTML = "";
+  //create a button for every possible answer
   for (i = 0; i < question.answerArr.length; i++) {
     choices.appendChild(document.createElement("button"));
     choices.children[i].textContent = question.answerArr[i];
+    //all buttons are incorrect
     choices.children[i].onclick = incorrectAnswer;
   }
+  //only the button with the correct answer is correct
   choices.children[question.correctIndex].onclick = correctAnswer;
 }
 
