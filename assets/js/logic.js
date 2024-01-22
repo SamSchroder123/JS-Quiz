@@ -191,7 +191,7 @@ function saveInitials() {
   };
   scores.push(userEntry);
   localStorage.setItem("userEntries", JSON.stringify(scores));
-  window.location.href = "https://samschroder123.github.io/JS-Quiz/";
+  window.location.href = "./highscores.html";
 }
 
 function countDown() {
