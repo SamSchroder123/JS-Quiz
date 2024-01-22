@@ -87,15 +87,6 @@ var questions = {
   },
 };
 
-var numQuestionsGlobal = Object.keys(questions).length;
-
-var moreQuestions = true;
-
-//initialise the timer in seconds
-var timeLeft = 120;
-//initialise score to zero
-var score = 0;
-
 //function to generate random integer within range
 function getRandomInt(min, max) {
   min = Math.ceil(min);
@@ -175,14 +166,31 @@ function endQuiz() {
   clearInterval(window.timeInterval);
   //hide question elements
   document.getElementById("questions").style.display = "none";
-  var feedback = document.getElementById("feedback");
-  //show feedback elements
-  feedback.style.display = "block";
+  var endScreen = document.getElementById("end-screen");
+  //show end screen elements
+  endScreen.style.display = "block";
   //create element for score and present score
-  var scoreElement = document.createElement("h2");
-  scoreElement.textContent = "Score: " + score;
-  feedback.appendChild(scoreElement);
+  var scoreElement = document.getElementById("final-score");
+  scoreElement.textContent = score;
   //TODO: give ability to save initials
+  document.getElementById("submit").onclick = saveInitials;
+}
+
+function saveInitials() {
+  console.log("save here");
+  var initials = document.getElementById("initials").value;
+  initials = initials.toUpperCase();
+  // console.log(initials);
+  // scores[initials] = score;
+  // console.log(Object.keys(scores));
+  // localStorage.setItem("scoreList", scores);
+  // console.log("this is from storage " + localStorage.getItem("scoreList"));
+  var userEntry = {
+    initials: initials,
+    score: score,
+  };
+  scores.push(userEntry);
+  localStorage.setItem("userEntries", JSON.stringify(scores));
 }
 
 function countDown() {
@@ -205,6 +213,28 @@ function startQuiz() {
   //generate a new question
   newQuestion();
 }
+
+var scores = [];
+scores = localStorage.getItem("userEntries");
+console.log(scores);
+if (scores !== null && scores !== undefined) {
+  try {
+    scores = JSON.parse(scores);
+  } catch (error) {
+    console.error("Error parsing userEntries from localStorage:", error);
+    // Handle the error, possibly by setting scores to an empty array
+    scores = [];
+  }
+}
+
+var numQuestionsGlobal = Object.keys(questions).length;
+
+var moreQuestions = true;
+
+//initialise the timer in seconds
+var timeLeft = 1;
+//initialise score to zero
+var score = 0;
 
 //start quiz when start button is clicked
 startBttn = document.getElementById("start");
