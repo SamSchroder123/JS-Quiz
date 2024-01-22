@@ -45,6 +45,46 @@ var questions = {
     ],
     correctIndex: 3,
   },
+  6: {
+    q: "What is the purpose of the 'typeof' operator in Javascript?",
+    answerArr: [
+      "To check the type of a variable",
+      "To create a new variable",
+      "To loop through an array",
+      "None of the Above",
+    ],
+    correctIndex: 0,
+  },
+  7: {
+    q: "What does AJAX stand for?",
+    answerArr: [
+      "All Javascript and XML",
+      "Asynchronous JavaScript and XML",
+      "Advanced JavaScript and XML",
+      "None of the Above",
+    ],
+    correctIndex: 1,
+  },
+  8: {
+    q: "Which method is used to add a new element to the end of an array?",
+    answerArr: ["push()", "append()", "addToEnd()", "None of the Above"],
+    correctIndex: 0,
+  },
+  9: {
+    q: "What is a closure in Javascript?",
+    answerArr: [
+      "A function with no parameters",
+      "A way to lock a variable",
+      "A combination of a function and the lexical environment",
+      "None of the Above",
+    ],
+    correctIndex: 2,
+  },
+  10: {
+    q: "Which event is triggered when a user clicks on an HTML element?",
+    answerArr: ["mouseover", "click", "keydown", "None of the Above"],
+    correctIndex: 1,
+  },
 };
 
 var moreQuestions = true;
