@@ -191,6 +191,7 @@ function saveInitials() {
   };
   scores.push(userEntry);
   localStorage.setItem("userEntries", JSON.stringify(scores));
+  window.location.href = "https://samschroder123.github.io/JS-Quiz/";
 }
 
 function countDown() {
@@ -232,7 +233,7 @@ var numQuestionsGlobal = Object.keys(questions).length;
 var moreQuestions = true;
 
 //initialise the timer in seconds
-var timeLeft = 1;
+var timeLeft = 60;
 //initialise score to zero
 var score = 0;
 

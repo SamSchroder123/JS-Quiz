@@ -4,9 +4,17 @@
 
 A timed multiple choice quiz that gives the user the option to save their score with their initials
 
-## Screenshot
+## Screenshots
+
+[screenshot 1](./assets/images/screenshot_0.png)
+
+[screenshot 2](./assets/images/screenshot_1.png)
+
+[screenshot 3](./assets/images/screenshot_2.png)
 
 ## Deployed Application
+
+[link to deployed application](https://samschroder123.github.io/JS-Quiz/)
 
 ## credits
 
