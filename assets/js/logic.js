@@ -87,10 +87,12 @@ var questions = {
   },
 };
 
+var numQuestionsGlobal = Object.keys(questions).length;
+
 var moreQuestions = true;
 
 //initialise the timer in seconds
-var timeLeft = 60;
+var timeLeft = 120;
 //initialise score to zero
 var score = 0;
 
@@ -128,6 +130,7 @@ function incorrectAnswer() {
   incorrectAudio.play();
 }
 
+//choose a random unrepeated question from the questions object and then provide the user with multiple choice answers
 function newQuestion() {
   // console.log(questionsObject);
   console.log("questions object: " + questions);
@@ -137,8 +140,11 @@ function newQuestion() {
   //keep selecting a new question while the selected question is not in the questions object
   do {
     //randomly select question
-    var qSelector = getRandomInt(1, numQuestions);
+    var qSelector = getRandomInt(1, numQuestionsGlobal + 1);
+    console.log("This is inside the do while loop " + qSelector);
   } while (qSelector in questions == false);
+  console.log("qSelector" + qSelector);
+  console.log("Object.keys(questions)" + Object.keys(questions));
   var question;
   //store question in question variable
   question = questions[qSelector];
