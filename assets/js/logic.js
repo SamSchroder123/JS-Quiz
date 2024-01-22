@@ -116,7 +116,7 @@ function correctAnswer() {
 
 function incorrectAnswer() {
   //subtract 5 seconds from the clock and play appropriate audio
-  timeLeft = timeLeft - 5;
+  timeLeft = timeLeft - 10;
   var incorrectAudio = document.getElementById("incorrect");
   incorrectAudio.play();
 }
