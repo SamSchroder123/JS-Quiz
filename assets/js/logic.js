@@ -1,4 +1,5 @@
-let questions = {
+//store questions uniformly in an object
+var questions = {
   1: {
     q: "Javascript is a ______ language",
     answerArr: [
@@ -45,11 +46,15 @@ let questions = {
     correctIndex: 3,
   },
 };
-var answeredQuestions = {};
 
-var timeLeft = 120;
+var moreQuestions = true;
+
+//initialise the timer in seconds
+var timeLeft = 60;
+//initialise score to zero
 var score = 0;
 
+//function to generate random integer within range
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -57,45 +62,50 @@ function getRandomInt(min, max) {
 }
 
 function correctAnswer() {
+  //add 1 to the score and play appropriate audio
   score++;
   var correctAudio = document.getElementById("correct");
   correctAudio.play();
+  //wait for audio to finish playing to avoid asynchronous issues
   setTimeout(function () {
-    questions = newQuestion(questions);
+    //check if there are any more unanswered questions
+    console.log(Object.keys(questions));
+    //if there are no more questions end the quiz
+    if (Object.keys(questions).length == 0) {
+      endQuiz();
+      return;
+      //otherwise generate a new question
+    } else {
+      newQuestion();
+    }
   }, 1000);
 }
 
 function incorrectAnswer() {
+  //subtract 5 seconds from the clock and play appropriate audio
   timeLeft = timeLeft - 5;
   var incorrectAudio = document.getElementById("incorrect");
   incorrectAudio.play();
-  setTimeout(function () {}, 1000);
 }
 
-function newQuestion(questionsObject) {
-  console.log(questionsObject);
-  var keysArr = Object.keys(questionsObject);
+function newQuestion() {
+  // console.log(questionsObject);
+  console.log("questions object: " + questions);
+  var keysArr = Object.keys(questions);
   var numQuestions = keysArr.length;
-  //randomly select question
-  var qSelector = getRandomInt(1, numQuestions + 1);
-  //if questionsObject is empty end function
-  if (Object.keys(questionsObject).length === 0) {
-    console.log("empty questionsObject");
-    endQuiz();
-    return {};
-  }
-  //if questionsObject has questions but the selected question is undefined, try again
-  var question;
+  console.log("number of questions left: " + numQuestions);
+  //keep selecting a new question while the selected question is not in the questions object
   do {
-    var qSelector = getRandomInt(1, numQuestions + 1);
-    question = questionsObject[qSelector];
-  } while (question === undefined);
+    //randomly select question
+    var qSelector = getRandomInt(1, numQuestions);
+  } while (qSelector in questions == false);
+  var question;
+  //store question in question variable
+  question = questions[qSelector];
   console.log("question = " + question);
   //update question title
   var questionTitle = document.getElementById("question-title");
-  //   console.log(question);
-  var q = "q";
-  console.log("question[q] = " + question[q]);
+  console.log("question.q = " + question.q);
   questionTitle.textContent = question.q;
   var choices = document.getElementById("choices");
   //clear buttons before creating new
@@ -107,41 +117,49 @@ function newQuestion(questionsObject) {
     //all buttons are incorrect
     choices.children[i].onclick = incorrectAnswer;
   }
-  //only the button with the correct answer is correct
+  //only the button with the correct answer is correct (overwrite)
   choices.children[question.correctIndex].onclick = correctAnswer;
   //remove selected question from questions object so as not to repeat
-  delete questionsObject[qSelector];
-  return questionsObject;
+  delete questions[qSelector];
 }
 
 function endQuiz() {
   console.log("end");
+  //stop timer
   clearInterval(window.timeInterval);
-  //TODO: display score
+  //hide question elements
   document.getElementById("questions").style.display = "none";
   var feedback = document.getElementById("feedback");
+  //show feedback elements
   feedback.style.display = "block";
+  //create element for score and present score
   var scoreElement = document.createElement("h2");
   scoreElement.textContent = "Score: " + score;
   feedback.appendChild(scoreElement);
-
-  //TODO: give ability to save initials and score
+  //TODO: give ability to save initials
 }
 
 function countDown() {
+  //subtract 1 from the timer and update time element
   timeLeft--;
   document.getElementById("time").textContent = timeLeft;
+  //end the quiz when there is no more time left
   if (timeLeft <= 0) {
     endQuiz();
   }
 }
 
 function startQuiz() {
+  //run the countDown function every second
   window.timeInterval = setInterval(countDown, 1000);
+  //hide start screen elements
   document.getElementById("start-screen").style.display = "none";
+  //show question elements
   document.getElementById("questions").style.display = "block";
-  questions = newQuestion(questions);
+  //generate a new question
+  newQuestion();
 }
 
+//start quiz when start button is clicked
 startBttn = document.getElementById("start");
 startBttn.onclick = startQuiz;
