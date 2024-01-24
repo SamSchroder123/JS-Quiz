@@ -177,9 +177,11 @@ function endQuiz() {
 }
 
 function saveInitials() {
+  // var scores = [];
   console.log("save here");
   var initials = document.getElementById("initials").value;
   initials = initials.toUpperCase();
+  console.log("initials to save" + initials);
   // console.log(initials);
   // scores[initials] = score;
   // console.log(Object.keys(scores));
